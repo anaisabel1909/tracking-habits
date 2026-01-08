@@ -42,7 +42,7 @@ This project is also a hands-on learning experience focused on web development f
 ---
 
 ## Project Structure (initial)
-
+```text
 tracking-habits/
 ├── index.html
 ├── css/
