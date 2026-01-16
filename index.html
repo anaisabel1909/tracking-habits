@@ -24,10 +24,12 @@
             </header>
 
             <div class="date-div">
-                <p>Jan 8, 2026</p>
+                <p class="todays-date"></p>
             </div>
 
             <main class="habits-container"></main>
+
+            <!-- <button onclick="popHabitsArray()">pop habits array</button> -->
         </div>
 
         <div class="view-habit-page hidden" id="view-habit-page">
@@ -37,18 +39,24 @@
             </header>
             
             <div class="habit-details">
-                <h3 class="h-name"></h3>
-                <h5>Description</h5>
-                <p class="h-description"></p>
+                <h2 class="h-name"></h2>
+                <p class="h-description"><span class="span">Description: </span></p>
             </div>
 
-            <div class="calendar">
-                <div class="tracker-header">
-                    <button>&lt;</button>
-                    <span class="calendary-month">Month</span>
-                    <button>&gt;</button>
+            <div class="view-habit-main">
+                <div class="calendar">
+
+                    <div class="calendar-header">
+                        <button class="calendar-btn" onclick="changeMonth(-1)">&lt;</button>
+                        <span class="calendar-month">Month</span>
+                        <button class="calendar-btn" onclick="changeMonth(+1)">&gt;</button>
+                    </div>
+
+                    <div id="calendarGrid"></div>
+
                 </div>
             </div>
+
         </div>
 
         <div class="statistics-page hidden" id="statistics-page">

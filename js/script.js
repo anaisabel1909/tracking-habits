@@ -26,6 +26,47 @@ const habitsContainer = document.querySelector('.habits-container');
 const toggle = document.getElementById("theme-toggle");
 const savedTheme = localStorage.getItem("theme");
 
+const habitNameEl = document.querySelector('.h-name')
+const habitDescriptionEl = document.querySelector('.h-description')
+
+const todaysDateEl = document.querySelector('.todays-date')
+const calendarMonthEl = document.querySelector('.calendar-month')
+
+const calendarDaysDiv = document.querySelector(".days")
+
+let markedDays = []
+
+const monthNames = [
+    'January', 
+    'February', 
+    'March', 
+    'April', 
+    'May', 
+    'June', 
+    'July', 
+    'August', 
+    'September', 
+    'October', 
+    'November', 
+    'December'
+]
+
+const monthNamesAbrev = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+]
+
+const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
 
 // state 
@@ -85,6 +126,19 @@ function showPageById (id) {
     }
 }
 
+
+const today = new Date()
+const thisYear = today.getFullYear()
+
+let currentYear = today.getFullYear()
+
+let currentMonth = today.getMonth()
+
+let currentDay = today.getDate()
+
+todaysDateEl.textContent = `${monthNamesAbrev[currentMonth]} ${currentDay}, ${currentYear}`
+
+
 function renderHabits() {
     habitsContainer.innerHTML = ''
 
@@ -119,16 +173,16 @@ habitsContainer.addEventListener('click', (e) => {
 })
 
 function showHabitDetails(id) {
-    const habit = habitsArray.find(h => h.id === id);
-    if (!habit) return;
+    const habit = habitsArray.find(h => h.id === id)
+    if (!habit) return
 
-    // depois você renderiza os detalhes aqui
-    console.log(habit);
+    console.log(habit)
+
+    habitNameEl.textContent = habit.name
+    habitDescriptionEl.textContent += habit.description
 
 
-    
-
-    showPageById('view-habit-page');
+    showPageById('view-habit-page')
 }
 
 
@@ -185,7 +239,129 @@ tagsDiv.addEventListener('click', (e) => {
     tagEl.remove()
 })
 
+//view habit page
 
+//calendar 
+function getDaysInMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate()
+}
+
+function getFirstDayOfMonth(year, month) {
+    return new Date(year, month, 1).getDay()
+}
+
+function isToday(year, month, day) {
+    return year === today.getFullYear() && 
+            month === today.getMonth() && 
+            day === today.getDate()
+}
+function getDateKey(year, month, day) {
+        return `${year}-${month}-${day}`
+    }
+function toggleDay(year, month, day) {
+    let key = getDateKey(year, month, day)
+
+     if (markedDays.includes(key)) {
+        markedDays = markedDays.filter(d => d !== key)
+    } else {
+        markedDays.push(key)
+    }
+
+    console.log(markedDays)
+
+    renderCalendar()
+}
+
+function createMonth(year, monthIndex) {
+    
+    if (currentYear != thisYear) {
+        calendarMonthEl.textContent = `${monthNames[monthIndex]}, ${currentYear}`
+    } else {
+        calendarMonthEl.textContent = monthNames[monthIndex]
+    }
+
+    const monthDiv = document.createElement('div')
+    monthDiv.className = 'month'
+
+    const weekdaysDiv = document.createElement('div')
+    weekdaysDiv.className = 'weekdays'
+    weekdays.forEach(day => {
+        const weekdayDiv = document.createElement('div')
+        weekdayDiv.className = 'weekday'
+        weekdayDiv.textContent = day
+        weekdaysDiv.appendChild(weekdayDiv)
+    });
+    monthDiv.appendChild(weekdaysDiv)
+
+    const daysDiv = document.createElement('div')
+    daysDiv.className = 'days'
+
+    const firstDay = getFirstDayOfMonth(year, monthIndex)
+    const daysInMonth = getDaysInMonth(year, monthIndex)
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyDiv = document.createElement('div')
+        daysDiv.appendChild(emptyDiv)
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayDiv = document.createElement('div')
+        dayDiv.className = 'day'
+        dayDiv.textContent = day
+
+        const key = getDateKey(year, monthIndex, day)
+
+        if (markedDays.includes(key)) {
+            dayDiv.classList.add('completed')
+        }
+        
+        dayDiv.onclick = () => toggleDay(year, monthIndex, day)
+
+        daysDiv.appendChild(dayDiv)
+    }
+
+    monthDiv.appendChild(daysDiv)
+    return monthDiv
+}
+
+function renderCalendar() {
+    const grid = document.getElementById('calendarGrid')
+    grid.innerHTML = ''
+
+    grid.appendChild(createMonth(currentYear, currentMonth))
+}
+
+function saveDaysCompleted(id) {
+    const habit = habitsArray.find(h => h.id === id)
+    habit.daysCompleted = markedDays
+    
+}
+
+
+function changeMonth(delta) {
+    currentMonth += delta
+
+    if (currentMonth < 0) {
+        currentMonth = 11
+        currentYear--
+    }
+
+    if (currentMonth > 11) {
+        currentMonth = 0
+        currentYear++
+    }
+
+    renderCalendar()
+}
+
+renderCalendar()
+console.log(habitsArray)
+
+// function popHabitsArray() {
+//     habitsArray.pop()
+//     saveHabits()
+//     console.log(habitsArray)
+// }
 
 // navbar
 icons.forEach(icon => {

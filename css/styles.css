@@ -50,7 +50,7 @@ body.dark {
   --toggle-thumb: #e0e0e0;
 }
 
-p {
+p, h2, h3 {
     margin: 0;
 }
 
@@ -265,6 +265,8 @@ input:checked + .slider:before {
     
     background-color: var(--surface-1);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    cursor: pointer;
 }
 
 
@@ -377,7 +379,108 @@ form textarea {
 
 
 /* view habit page */
-.calendar
+.habit-details {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.675em;
+
+    background-color: var(--surface-2);
+
+    padding: 1em;
+}
+
+.span {
+    font-weight: 800;
+}
+
+.view-habit-main {
+    padding: 1em;
+}
+
+.calendar {
+    border: 1px solid var(--text-primary);
+    border-radius: var(--border-radius);
+
+    padding: 1.2em 0.7em;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 1em 1em;
+
+    /* border: 1px solid rebeccapurple; */
+
+    font-size: 1.2rem;
+}
+
+.calendar-btn {
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    background-color: var(--surface-1);
+    font-size: 1em;
+}
+
+.month {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid purple; */
+}
+
+.weekdays, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.weekdays {
+    margin-bottom: 5px;
+    /* border: 1px solid yellow; */
+}
+
+.weekday {
+    text-align: center;
+    font-weight: bold;
+    color: var(--text-primary);
+    padding: 8px 0;
+    font-size: 0.85em;
+
+    /* border: 1px solid green; */
+}
+
+.days {
+    /* border: 1px solid pink; */
+}
+
+.day {
+    width: 3em;
+    height: 3em;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 1px solid var(--border-subtle);
+
+    font-size: 0.9em;
+    color: var(--text-primary);
+
+}
+
+.completed {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
 
 
 /* nav bar */
