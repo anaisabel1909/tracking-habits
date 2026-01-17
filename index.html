@@ -79,8 +79,8 @@
         <section class="page hidden" id="create-habit-page">
           <form id="create-habit-form">
             <div class="form-group">
-              <label>Habit name</label>
-              <input type="text" required />
+              <label for="habit-name">Habit name</label>
+              <input id="habit-name" name="habit-name" type="text" required />
             </div>
 
             <div class="form-group">
@@ -89,8 +89,8 @@
             </div>
 
             <div class="form-group">
-              <label>Frequency</label>
-              <select required>
+              <label for="habit-frequency">Frequency</label>
+              <select id="habit-frequency" name="habit-frequency" required>
                 <option value="">Select</option>
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -98,8 +98,19 @@
               </select>
             </div>
 
+            <div class="form-group"> 
+                <label for="habit-tags">Tags</label> 
+                <div class="tags"> 
+                    <div>
+                        <input id="habit-tags" name="tag" type="text"> 
+                        <button class="add-tag-btn btn-secondary btn" id="add-tag-btn" type="button">Add tag</button> 
+                    </div>
+                    <div class="tags-div" id="tags-div"></div> 
+                </div> 
+            </div>
+
             <div class="form-group">
-              <label>Icon</label>
+              <label for="icons-div">Icon</label>
               <div class="icons-div">
                 <i class="fa-solid fa-droplet gota-dagua"></i>
                 <i class="fa-solid fa-list lista"></i>
@@ -111,52 +122,80 @@
                 <i class="fa-solid fa-cart-shopping carrinho-compras"></i>
                 <i class="fa-solid fa-bell sino"></i>
                 <i class="fa-solid fa-house casa"></i>
-                <i class="fa-solid fa-check check"></i>
                 <i class="fa-solid fa-heart coracao"></i>
                 <i class="fa-solid fa-folder-open pasta"></i>
                 <i class="fa-solid fa-code code"></i>
                 <i class="fa-solid fa-flask ciencia"></i>
                 <i class="fa-solid fa-handshake aperto-de-maos"></i>
-                <i class="fa-solid fa-bicycle academia"></i>
+                <i class="fa-solid fa-dumbbell gym"></i>
                 <i class="fa-solid fa-person-walking andando"></i>
                 <i class="fa-solid fa-spa autocuidado"></i>
-                <i class="fa-solid fa-church igreja"></i>
+                <i class="fa-solid fa-cross cruz"></i>
+                <i class="fa-solid fa-sack-dollar saco-de-dinheiro"></i>
+                <i class="fa-solid fa-paw pata"></i>
+                <i class="fa-solid fa-book livro"></i>
+                <i class="fa-solid fa-seedling planta"></i>
+                <i class="fa-solid fa-utensils"></i>
+                <i class="fa-solid fa-masks-theater"></i>
+                <i class="fa-solid fa-palette"></i>
+                <i class="fa-solid fa-earth-americas"></i>
+                <i class="fa-solid fa-pen"></i>
               </div>
             </div>
 
             <div class="form-group themes">
               <label for="html">Theme</label>
-              <div>
-                <input
-                  type="radio"
-                  id="theme-1"
-                  name="theme-1"
-                  value="theme-1"
-                />
-                <input
-                  type="radio"
-                  id="theme-2"
-                  name="theme-2"
-                  value="theme-2"
-                />
-                <input
-                  type="radio"
-                  id="theme-3"
-                  name="theme-3"
-                  value="theme-3"
-                />
-                <input
-                  type="radio"
-                  id="theme-4"
-                  name="theme-4"
-                  value="theme-4"
-                />
-                <input
-                  type="radio"
-                  id="theme-5"
-                  name="theme-5"
-                  value="theme-5"
-                />
+              <div id="theme-options-div" class="theme-options-div">
+
+                <div class="theme-div">
+                    <input
+                    type="radio"
+                    id="theme-1"
+                    name="theme"
+                    value="theme-1"
+                    />
+                    <span class="bold">Theme 1</span>
+                </div>
+
+                <div class="theme-div">
+                    <input
+                    type="radio"
+                    id="theme-2"
+                    name="theme"
+                    value="theme-2"
+                    />
+                    <span class="bold">Theme 2</span>
+                </div>
+
+                <div class="theme-div">
+                    <input
+                    type="radio"
+                    id="theme-3"
+                    name="theme"
+                    value="theme-3"
+                    />
+                    <span class="bold">Theme 3</span>
+                </div>
+
+                <div class="theme-div">
+                    <input
+                    type="radio"
+                    id="theme-4"
+                    name="theme"
+                    value="theme-4"
+                    />
+                    <span class="bold">Theme 4</span>
+                </div>
+
+                <div class="theme-div">
+                    <input
+                    type="radio"
+                    id="theme-5"
+                    name="theme"
+                    value="theme-5"
+                    />
+                    <span class="bold">Theme 5</span>
+                </div>
               </div>
             </div>
 

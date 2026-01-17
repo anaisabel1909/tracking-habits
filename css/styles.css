@@ -20,29 +20,7 @@
   --toggle-bg: #e0e0e0;
   --toggle-thumb: #ffffff;
 
-   --theme-1-color-1: #880D1E;
-   --theme-1-color-2: #DD2D4A;
-   --theme-1-color-3: #F26A8D;
-   --theme-1-color-4: #F49CBB;
-   --theme-1-colo-5: #CBEEF3;
-
-   --theme-2-color-1: #C6D4FF; 
-   --theme-2-color-2: #7A82AB;
-   --theme-2-color-3: #307473;
-   --theme-2-color-4: #12664F;
-   --theme-2-color-5: #2DC2BD;
    
-   --theme-3-color-1: #A393BF;
-   --theme-3-color-2: #9882AC;
-   --theme-3-color-3: #73648A;
-   --theme-3-color-4: #453750;
-   --theme-3-color-5: #0C0910;
- 
-   --theme-4-color-1: #0A210F;
-   --theme-4-color-2: #14591D;
-   --theme-4-color-3: #99AA38;
-   --theme-4-color-4: #E1E289;
-   --theme-4-color-5: #ACD2ED;
 
 
 }
@@ -155,6 +133,18 @@ html, body {
     display: flex;
 }
 
+.bold {
+    font-weight: bolder;
+}
+
+.flex {
+    display: flex;
+}
+
+.grid {
+    display: grid;
+}
+
 /* buttons */
 .btn {
     cursor: pointer;
@@ -193,15 +183,6 @@ html, body {
 
     font-size: 1.1em;
 }
-/* forms */
-
-
-
-/* modais */
-
-
-
-/* home page */
 
 .home-page {
     position: relative;
@@ -210,26 +191,6 @@ html, body {
 .date-div {
     text-align: center;
 }
-
-/* header {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 2.5em 0 2em;
-
-    font-size: 1.2rem;
-
-    border-bottom: 1px solid var(--border-subtle);
-
-    flex-shrink: 0;
-
-    height: 60px;
-
-    z-index: 2;
-} */
 
 /* toggle switch */
 .switch {
@@ -322,24 +283,6 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-/* 
-.date-div {
-    background-color: var(--surface-2);
-
-    border-bottom: 1px solid var(--border-subtle);
-
-    font-size: 1.1rem;
-    padding: 1em;
-
-    color:  var(--text-primary);
-}
-
-.habits-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 2em 3em;
-    overflow: auto;
-} */
 
 .date-div {
   background-color: var(--surface-2);
@@ -379,13 +322,13 @@ input:checked + .slider:before {
 
 
 /* create habit page */
-.create-habit-page {
+#create-habit-page {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.create-habit-page main {
+#create-habit-page {
     padding: 2em 1.5em 4.7em;
     flex: 1;             
     overflow-y: auto; 
@@ -398,7 +341,7 @@ input:checked + .slider:before {
 form label {
     display: block;
 
-    margin-bottom: 0.5em;
+    margin-bottom: 0.75em;
 
     font-size: var(--font-size-medium);
     font-weight: 600;
@@ -456,10 +399,12 @@ form textarea {
     font-size: 0.9rem;
 
     display: inline-block;
+    border: 1px solid var(--surface-1);
 }
 
 .tag:hover {
     background: var(--surface-0);
+    border: 1px solid var(--text-primary);
 }
 
 .delete-tag-btn {
@@ -497,16 +442,53 @@ form textarea {
     width: 47%;
 }
 
+/* habit theme */
+
+.theme-options-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    border: 1px solid blue;
+}
+
+.theme-options-div span {
+    justify-self: center;
+    align-self: center;
+}
+
+.theme-options-div input {
+    width: fit-content;
+}
+
+.theme-div {
+    display: flex;
+    border: 1px solid red;
+}
+
+/* habit icons */
 .icons-div {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 3.7em);
+    /* border: 1px solid blue; */
 }
 
 .icons-div i {
-    font-size: 1.25em;
-    border: 1px solid red;
+    font-size: 1em;
+    /* border: 1px solid red; */
     text-align: center;
     padding: 0.5em 0;
+    cursor: pointer;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icons-div i:hover {
+    background: var(--surface-1);
+    border-radius: 50%;
+    border: 1px solid var(--text-primary);
 }
 
 

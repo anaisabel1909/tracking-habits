@@ -162,21 +162,27 @@ function renderPageTitle(pageId) {
 }
 
 function showPageById(id) {
-    pages.forEach(page => {
+    const pagesList = document.querySelectorAll('.page')
+
+    pagesList.forEach(page => {
         page.classList.remove('visible')
         page.classList.add('hidden')
+        page.style.display = 'none' 
     })
 
     const target = document.getElementById(id)
-    if (!target) return
+    if (!target) {
+        console.warn('showPageById: target not found ->', id)
+        return
+    }
 
     previousPageId = currentPageId
     currentPageId = id
-
-    localStorage.setItem("savedPageId", currentPageId)
+    localStorage.setItem('savedPageId', currentPageId)
 
     target.classList.remove('hidden')
     target.classList.add('visible')
+    target.style.display = 'flex' 
 
     updateActiveIcon(currentPageId)
     renderPageTitle(currentPageId)
