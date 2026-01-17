@@ -1,40 +1,39 @@
 // consts
 const homePage = document.getElementById("home-page")
-
 const createHabitPage = document.getElementById("create-habit-page")
-
 const viewHabitPage = document.getElementById("view-habit-page")
-
+const editPage = document.getElementById("edit-page")
 const statsPage = document.getElementById("statistics-page")
-
 const settingsPage = document.getElementById("settings-page")
 
-const icons = document.querySelectorAll('.icon');
+const icons = document.querySelectorAll('.icon')
 
-const pages = document.querySelectorAll('.app > div'); 
-
-const addTagBtn = document.getElementById("add-tag-btn")
+const pages = document.querySelectorAll('.page')
 
 const createHabitForm = document.getElementById("create-habit-form")
-
 const tagInput = document.getElementById("habit-tags")
 
-const tagsDiv = document.getElementById("tags-div")
-
-const habitsContainer = document.querySelector('.habits-container');
-
-const toggle = document.getElementById("theme-toggle");
-const savedTheme = localStorage.getItem("theme");
+const toggle = document.getElementById("theme-toggle")
 
 const habitNameEl = document.querySelector('.h-name')
 const habitDescriptionEl = document.querySelector('.h-description')
-
 const todaysDateEl = document.querySelector('.todays-date')
 const calendarMonthEl = document.querySelector('.calendar-month')
+const pageTitleEl = document.getElementById("page-title")
 
+const tagsDiv = document.getElementById("tags-div")
 const calendarDaysDiv = document.querySelector(".days")
+const habitsContainer = document.querySelector('.habits-container')
 
-let markedDays = []
+const addTagBtn = document.getElementById("add-tag-btn")
+const editHabitBtn = document.getElementById("edit-habit-btn")
+const deleteHabitBtn = document.getElementById("delete-habit-btn")
+const backBtn = document.querySelector(".back-btn")
+const cancelBtn = document.querySelector(".cancel-btn")
+
+const savedTheme = localStorage.getItem("theme");
+const savedPageId = localStorage.getItem("savedPageId")
+
 
 const monthNames = [
     'January', 
@@ -68,11 +67,36 @@ const monthNamesAbrev = [
 
 const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
+const today = new Date()
+const thisYear = today.getFullYear()
 
-// state 
+const pageNames = new Map()
+
+pageNames.set("home-page", "Habit Tracker")
+pageNames.set("create-habit-page", "New Habit")
+pageNames.set("edit-page", "Edit Habit")
+pageNames.set("statistics-page", "Statistics")
+pageNames.set("settings-page", "Settings")
+pageNames.set("view-habit-page", "Habit Detail")
+
+let markedDays = []
+
+let currentHabitId = null 
+
 let habitsArray = JSON.parse(localStorage.getItem("habits")) || []
-renderHabits()
+
 let tagsArray = []
+let allTagsArray = []
+
+let currentYear = today.getFullYear()
+let currentMonth = today.getMonth()
+let currentDay = today.getDate()
+
+let currentPageId = savedPageId || 'home-page'
+let previousPageId = null
+
+renderHabits()
+showPageById(currentPageId)
 
 // storage 
 function saveHabits() {
@@ -80,7 +104,14 @@ function saveHabits() {
 }
 
 function addHabit(habit) {
-    habitsArray.push(habit)
+    const habitInArray = habitsArray.find(h => h.id === habit.id)
+
+    if (habitInArray) {
+        habitsArray[indexOf(habitInArray)] = habit
+    } else {
+        habitsArray.push(habit)
+    }
+
     saveHabits()
 }
 
@@ -99,45 +130,57 @@ function getStreak (habit) {
     return habit.daysCompleted.length
 }
 
+function getCurrentHabit() {
+    return habitsArray.find(h => h.id === currentHabitId)
+}
+
+function loadHabitDays(habit) {
+    markedDays = habit.daysCompleted ? [...habit.daysCompleted] : []
+}
+
+
 /* ui */ 
 if (savedTheme === "dark") {
-  document.body.classList.add("dark");
-  toggle.checked = true;
+  document.body.classList.add("dark")
+  toggle.checked = true
 }
 
 toggle.addEventListener("change", () => {
-  document.body.classList.toggle("dark");
-
+  document.body.classList.toggle("dark")
+  
   localStorage.setItem(
-    "theme",
-    document.body.classList.contains("dark") ? "dark" : "light"
-  );
-});
+      "theme",
+      document.body.classList.contains("dark") ? "dark" : "light"
+    )
+})
 
-function showPageById (id) {
-    pages.forEach(p => {
-        p.classList.remove('visible')
-        p.classList.add('hidden')
-    })
-    const target = document.getElementById(id)
-    if (target) {
-        target.classList.remove('hidden')
-        target.classList.add('visible')
-    }
-}
-
-
-const today = new Date()
-const thisYear = today.getFullYear()
-
-let currentYear = today.getFullYear()
-
-let currentMonth = today.getMonth()
-
-let currentDay = today.getDate()
 
 todaysDateEl.textContent = `${monthNamesAbrev[currentMonth]} ${currentDay}, ${currentYear}`
 
+function renderPageTitle(pageId) {
+    pageTitleEl.textContent = pageNames.get(pageId)
+}
+
+function showPageById(id) {
+    pages.forEach(page => {
+        page.classList.remove('visible')
+        page.classList.add('hidden')
+    })
+
+    const target = document.getElementById(id)
+    if (!target) return
+
+    previousPageId = currentPageId
+    currentPageId = id
+
+    localStorage.setItem("savedPageId", currentPageId)
+
+    target.classList.remove('hidden')
+    target.classList.add('visible')
+
+    updateActiveIcon(currentPageId)
+    renderPageTitle(currentPageId)
+}
 
 function renderHabits() {
     habitsContainer.innerHTML = ''
@@ -170,7 +213,15 @@ habitsContainer.addEventListener('click', (e) => {
 
     const habitId = Number(habitEl.dataset.id)
     showHabitDetails(habitId)
+
 })
+
+function showPreviousPage() {
+    showPageById(previousPageId ||'home-page')
+}
+
+backBtn?.addEventListener('click', showPreviousPage)
+cancelBtn?.addEventListener('click', () => showPageById('home-page'))
 
 function showHabitDetails(id) {
     const habit = habitsArray.find(h => h.id === id)
@@ -178,10 +229,14 @@ function showHabitDetails(id) {
 
     console.log(habit)
 
+    currentHabitId = id 
+
+
     habitNameEl.textContent = habit.name
-    habitDescriptionEl.textContent += habit.description
+    habitDescriptionEl.innerHTML = `<span class="span">Description:</span> ${habit.description}`
 
-
+    loadHabitDays(habit)
+    renderCalendar()
     showPageById('view-habit-page')
 }
 
@@ -214,27 +269,35 @@ createHabitForm.addEventListener('submit', (e) => {
 })
 
 // add tag
-addTagBtn.addEventListener('click', () => {
+addTagBtn?.addEventListener('click', () => {
     const formData = new FormData(createHabitForm)
 
     const tag = formData.get("tag")
 
     if (tag) {
-        tagsArray.push(tag)
+        addTagToArray(tag, tagsArray)
+        addTagToArray(tag, allTagsArray)
+
         renderTag(tag)
+
         tagInput.value = ''
     }
 })
 
+function addTagToArray(tag, array) {
+    if (!array.includes(tag)) array.push(tag)
+}
+
 // delete tag
-tagsDiv.addEventListener('click', (e) => {
+tagsDiv?.addEventListener('click', (e) => {
     const btn = e.target.closest('.delete-tag-btn') 
 
     const tagEl = btn.closest('.tag') 
 
-    const tagText = tagEl.querySelector('span')?.textContent || '' 
-    const idx = tagsArray.indexOf(tagText) 
-    if (idx > -1) tagsArray.splice(idx, 1)
+    const tagText = tagEl.querySelector('span')?.textContent || ''
+
+    const index = tagsArray.indexOf(tagText) 
+    if (index > -1) tagsArray.splice(index, 1)
 
     tagEl.remove()
 })
@@ -242,6 +305,22 @@ tagsDiv.addEventListener('click', (e) => {
 //view habit page
 
 //calendar 
+function changeMonth(delta) {
+    currentMonth += delta
+
+    if (currentMonth < 0) {
+        currentMonth = 11
+        currentYear--
+    }
+
+    if (currentMonth > 11) {
+        currentMonth = 0
+        currentYear++
+    }
+
+    renderCalendar()
+}
+
 function getDaysInMonth(year, month) {
     return new Date(year, month + 1, 0).getDate()
 }
@@ -269,7 +348,24 @@ function toggleDay(year, month, day) {
 
     console.log(markedDays)
 
+    saveDaysCompleted()
     renderCalendar()
+}
+
+function saveDaysCompleted() {
+    const habit = getCurrentHabit()
+    if (!habit) return
+
+    habit.daysCompleted = [...markedDays]
+    
+    saveHabits()
+}
+
+function renderCalendar() {
+    const grid = document.getElementById('calendarGrid')
+    grid.innerHTML = ''
+
+    grid.appendChild(createMonth(currentYear, currentMonth))
 }
 
 function createMonth(year, monthIndex) {
@@ -324,37 +420,8 @@ function createMonth(year, monthIndex) {
     return monthDiv
 }
 
-function renderCalendar() {
-    const grid = document.getElementById('calendarGrid')
-    grid.innerHTML = ''
+renderCalendar() 
 
-    grid.appendChild(createMonth(currentYear, currentMonth))
-}
-
-function saveDaysCompleted(id) {
-    const habit = habitsArray.find(h => h.id === id)
-    habit.daysCompleted = markedDays
-    
-}
-
-
-function changeMonth(delta) {
-    currentMonth += delta
-
-    if (currentMonth < 0) {
-        currentMonth = 11
-        currentYear--
-    }
-
-    if (currentMonth > 11) {
-        currentMonth = 0
-        currentYear++
-    }
-
-    renderCalendar()
-}
-
-renderCalendar()
 console.log(habitsArray)
 
 // function popHabitsArray() {
@@ -363,14 +430,37 @@ console.log(habitsArray)
 //     console.log(habitsArray)
 // }
 
+editHabitBtn?.addEventListener( 'click', () => showEditPage( getCurrentHabit() ) )
+
+function showEditPage() {
+    showPageById('edit-page')
+}
+
+deleteHabitBtn?.addEventListener('click', () => {
+    
+})
+
 // navbar
+function updateActiveIcon(activePageId) {
+    const allIcons = document.querySelectorAll('.nav-items .icon')
+    
+    allIcons.forEach(icon => {
+        if (icon.dataset.target === activePageId) {
+            icon.classList.add('active')
+        } else {
+            icon.classList.remove('active')
+        }
+    })
+}
+
 icons.forEach(icon => {
     icon.addEventListener('click', () => {
-        const group = icon.closest('.nav-items')
-        if (group) group.querySelectorAll('.icon').forEach(i => i.classList.remove('active'))
-        icon.classList.add('active');
-        
         const targetId = icon.dataset.target
-        if (targetId) showPageById(targetId)
+        if (!targetId || targetId === currentPageId) return
+
+        showPageById(targetId)
     })
 })
+
+console.log(currentPageId)
+console.log(previousPageId)

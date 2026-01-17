@@ -1,136 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
     <title>Tracking Habits</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        
-        <div class="home-page visible" id="home-page">
-            <label class="switch">
-                <input type="checkbox" id="theme-toggle">
-                <span class="slider round">
-                    <i class="fa-solid fa-sun sun-icon"></i>
-                    <i class="fa-solid fa-moon moon-icon"></i>
-                </span>
-            </label>
-            <header>
-                <h3>Habit Tracker</h3>
-            </header>
+      <!-- HEADER GLOBAL -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="back-btn hidden" id="back-btn">
+            <i class="fa-solid fa-chevron-left"></i>
+            <span>Back</span>
+          </button>
+        </div>
 
-            <div class="date-div">
-                <p class="todays-date"></p>
+        <div class="page-title">
+            <h3 id="page-title"></h3>
+        </div>
+
+        <div class="header-right">
+          <label class="switch" id="theme-switch">
+            <input type="checkbox" id="theme-toggle" />
+            <span class="slider round">
+              <i class="fa-solid fa-sun sun-icon"></i>
+              <i class="fa-solid fa-moon moon-icon"></i>
+            </span>
+          </label>
+        </div>
+      </header>
+
+      <!-- MAIN (SCROLLÁVEL) -->
+      <main class="app-main">
+        <!-- HOME -->
+        <section class="page visible" id="home-page">
+          <div class="date-div">
+            <p class="todays-date"></p>
+          </div>
+
+          <div class="habits-container"></div>
+        </section>
+
+        <!-- VIEW HABIT -->
+        <section class="page hidden" id="view-habit-page">
+          <div class="habit-details">
+            <h2 class="h-name"></h2>
+            <p class="h-description"></p>
+          </div>
+
+          <div class="calendar">
+            <div class="calendar-header">
+              <button onclick="changeMonth(-1)">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <span class="calendar-month"></span>
+              <button onclick="changeMonth(1)">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
             </div>
 
-            <main class="habits-container"></main>
+            <div id="calendarGrid"></div>
+          </div>
 
-            <!-- <button onclick="popHabitsArray()">pop habits array</button> -->
-        </div>
+          <div class="btns-div">
+            <button class="btn btn-secondary">Edit</button>
+            <button class="btn btn-primary">Delete habit</button>
+          </div>
+        </section>
 
-        <div class="view-habit-page hidden" id="view-habit-page">
-
-            <header>
-                <h3>Habit Details</h3>
-            </header>
-            
-            <div class="habit-details">
-                <h2 class="h-name"></h2>
-                <p class="h-description"><span class="span">Description: </span></p>
+        <!-- CREATE HABIT -->
+        <section class="page hidden" id="create-habit-page">
+          <form id="create-habit-form">
+            <div class="form-group">
+              <label>Habit name</label>
+              <input type="text" required />
             </div>
 
-            <div class="view-habit-main">
-                <div class="calendar">
-
-                    <div class="calendar-header">
-                        <button class="calendar-btn" onclick="changeMonth(-1)">&lt;</button>
-                        <span class="calendar-month">Month</span>
-                        <button class="calendar-btn" onclick="changeMonth(+1)">&gt;</button>
-                    </div>
-
-                    <div id="calendarGrid"></div>
-
-                </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea></textarea>
             </div>
 
-        </div>
-
-        <div class="statistics-page hidden" id="statistics-page">
-            <header>
-                <h3>Statistics</h3>
-            </header>
-
-         
-        </div>
-
-        <div class="create-habit-page hidden" id="create-habit-page">
-            <header>
-                <h3>New Habit</h3>
-            </header>
-           
-            <main>
-                <form id="create-habit-form">
-                    <div class="form-group">
-                        <label for="habit-name">Habit name</label>
-                        <input id="habit-name" name="habit-name" type="text" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="habit-description">Description</label>
-                        <textarea name="habit-description" id="habit-description"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="habit-frequency">Frequency</label>
-                        <select id="habit-frequency" name="habit-frequency" required>
-                            <option value="">Select frequency</option>
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group tags">
-                        <label for="habit-tags">Tags</label>
-                        <div>
-                            <input id="habit-tags" name="tag" type="text">
-                            <button class="add-tag-btn btn-secondary btn" id="add-tag-btn" type="button">Add tag</button>
-                        </div>
-                        <div class="tags-div" id="tags-div"></div>
-                    </div>
-
-                    <div class="btns-div">
-                        <button class="btn btn-secondary" type="button">Cancel</button> 
-                        <button class="btn btn-primary" id="create-habit-btn" type="submit">Create habit</button>
-                    </div>
-                </form>
-            </main>
-
-        </div>
-
-        <div class="settings-page hidden" id="settings-page">
-            <header>
-                <h3>Settings</h3>
-            </header>
-            
-        </div>
-
-        <nav class="nav-bar">
-            <div class="nav-items">
-                <i class="fa-solid fa-house icon active" data-target='home-page'></i>
-                <i class="fa-solid fa-chart-simple icon" data-target="statistics-page"></i>
-                <i class="fa-solid fa-plus icon" data-target="create-habit-page"></i>
-                <i class="fa-solid fa-gear icon" data-target="settings-page"></i>
+            <div class="form-group">
+              <label>Frequency</label>
+              <select required>
+                <option value="">Select</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
             </div>
-        </nav>
 
+            <div class="form-group">
+              <label>Icon</label>
+              <div class="icons-div">
+                <i class="fa-solid fa-droplet gota-dagua"></i>
+                <i class="fa-solid fa-list lista"></i>
+                <i class="fa-solid fa-poo coco"></i>
+                <i class="fa-solid fa-car carro"></i>
+                <i class="fa-solid fa-phone telefone"></i>
+                <i class="fa-solid fa-music nota-musical"></i>
+                <i class="fa-solid fa-star estrela"></i>
+                <i class="fa-solid fa-cart-shopping carrinho-compras"></i>
+                <i class="fa-solid fa-bell sino"></i>
+                <i class="fa-solid fa-house casa"></i>
+                <i class="fa-solid fa-check check"></i>
+                <i class="fa-solid fa-heart coracao"></i>
+                <i class="fa-solid fa-folder-open pasta"></i>
+                <i class="fa-solid fa-code code"></i>
+                <i class="fa-solid fa-flask ciencia"></i>
+                <i class="fa-solid fa-handshake aperto-de-maos"></i>
+                <i class="fa-solid fa-bicycle academia"></i>
+                <i class="fa-solid fa-person-walking andando"></i>
+                <i class="fa-solid fa-spa autocuidado"></i>
+                <i class="fa-solid fa-church igreja"></i>
+              </div>
+            </div>
 
+            <div class="form-group themes">
+              <label for="html">Theme</label>
+              <div>
+                <input
+                  type="radio"
+                  id="theme-1"
+                  name="theme-1"
+                  value="theme-1"
+                />
+                <input
+                  type="radio"
+                  id="theme-2"
+                  name="theme-2"
+                  value="theme-2"
+                />
+                <input
+                  type="radio"
+                  id="theme-3"
+                  name="theme-3"
+                  value="theme-3"
+                />
+                <input
+                  type="radio"
+                  id="theme-4"
+                  name="theme-4"
+                  value="theme-4"
+                />
+                <input
+                  type="radio"
+                  id="theme-5"
+                  name="theme-5"
+                  value="theme-5"
+                />
+              </div>
+            </div>
+
+            <div class="btns-div">
+              <button type="button" class="btn btn-secondary cancel-btn">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Create habit
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- STATISTICS -->
+        <section class="page hidden" id="statistics-page">
+          <p>Statistics coming soon 📊</p>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="page hidden" id="settings-page">
+        </section>
+      </main>
+
+      <!-- NAV -->
+      <nav class="nav-bar">
+        <div class="nav-items">
+          <i class="fa-solid fa-house icon active" data-target="home-page"></i>
+          <i class="fa-solid fa-chart-simple icon" data-target="statistics-page"></i>
+          <i class="fa-solid fa-plus icon" data-target="create-habit-page"></i>
+          <i class="fa-solid fa-gear icon" data-target="settings-page"></i>
+        </div>
+      </nav>
     </div>
 
     <script src="./js/script.js"></script>
-</body>
+  </body>
 </html>

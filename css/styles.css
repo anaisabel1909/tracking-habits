@@ -19,6 +19,32 @@
 
   --toggle-bg: #e0e0e0;
   --toggle-thumb: #ffffff;
+
+   --theme-1-color-1: #880D1E;
+   --theme-1-color-2: #DD2D4A;
+   --theme-1-color-3: #F26A8D;
+   --theme-1-color-4: #F49CBB;
+   --theme-1-colo-5: #CBEEF3;
+
+   --theme-2-color-1: #C6D4FF; 
+   --theme-2-color-2: #7A82AB;
+   --theme-2-color-3: #307473;
+   --theme-2-color-4: #12664F;
+   --theme-2-color-5: #2DC2BD;
+   
+   --theme-3-color-1: #A393BF;
+   --theme-3-color-2: #9882AC;
+   --theme-3-color-3: #73648A;
+   --theme-3-color-4: #453750;
+   --theme-3-color-5: #0C0910;
+ 
+   --theme-4-color-1: #0A210F;
+   --theme-4-color-2: #14591D;
+   --theme-4-color-3: #99AA38;
+   --theme-4-color-4: #E1E289;
+   --theme-4-color-5: #ACD2ED;
+
+
 }
 
 body {
@@ -58,21 +84,65 @@ p, h2, h3 {
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
 
 /* só pra simular a tela de um smartphone */
 .app {
-    width: 480px;
-    height: 99vh;
+  width: 480px;
+  height: 100vh;
+  margin: 0 auto;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface-1);
 
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 
-    border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
 
-    position: relative;
+.app-header {
+  /* height: 60px; */
+  flex-shrink: 0;
 
-    display: grid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background-color: var(--surface-1);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  background-color: var(--surface-1);
+
+}
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--surface-0);
+}
+
+.page {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page.visible {
+  display: flex;
+}
+
+.page-title {
+    padding: 2.75em 0 2em;
+    font-size: 1.1rem;
+}
+
+.home-page main,
+.create-habit-page main,
+.view-habit-page main {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 5em; /* navbar */
 }
 
 /* utilitários */
@@ -82,7 +152,7 @@ p, h2, h3 {
 }
 
 .visible {
-    display: block;
+    display: flex;
 }
 
 /* buttons */
@@ -114,6 +184,15 @@ p, h2, h3 {
 .btn-secondary:hover {
   background-color: var(--surface-2);
 }
+
+.back-btn {
+    cursor: pointer;
+
+    position: absolute;
+    left: 0.75em;
+
+    font-size: 1.1em;
+}
 /* forms */
 
 
@@ -128,15 +207,29 @@ p, h2, h3 {
     position: relative;
 }
 
-header, .date-div {
+.date-div {
     text-align: center;
 }
 
-header {
-    padding: 1.3em 0 1em;
+/* header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2.5em 0 2em;
+
     font-size: 1.2rem;
+
     border-bottom: 1px solid var(--border-subtle);
-}
+
+    flex-shrink: 0;
+
+    height: 60px;
+
+    z-index: 2;
+} */
 
 /* toggle switch */
 .switch {
@@ -229,7 +322,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-
+/* 
 .date-div {
     background-color: var(--surface-2);
 
@@ -246,6 +339,20 @@ input:checked + .slider:before {
     grid-template-columns: 1fr 1fr;
     padding: 2em 3em;
     overflow: auto;
+} */
+
+.date-div {
+  background-color: var(--surface-2);
+  padding: 1em;
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.habits-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+  padding: 1.5em;
 }
 
 .habit-element {
@@ -273,10 +380,19 @@ input:checked + .slider:before {
 
 /* create habit page */
 .create-habit-page {
-    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
+
 .create-habit-page main {
-    padding: 2em 1.5em;
+    padding: 2em 1.5em 4.7em;
+    flex: 1;             
+    overflow-y: auto; 
+}
+
+.create-habit-page header {
+    flex-shrink: 0; 
 }
 
 form label {
@@ -370,15 +486,36 @@ form textarea {
 }
 
 .btns-div {
-    margin-top: 11em; 
+    display: flex;
+    justify-content: center;
+    gap: 0.4em;
+
+    /* padding-bottom: 40em; */
 }
 
 .btns-div button {
-    width: 49%;
+    width: 47%;
+}
+
+.icons-div {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.icons-div i {
+    font-size: 1.25em;
+    border: 1px solid red;
+    text-align: center;
+    padding: 0.5em 0;
 }
 
 
 /* view habit page */
+.view-habit-main {
+    /* overflow-y: auto; */
+    padding: 1.125em;
+}
+
 .habit-details {
     display: flex;
     flex-direction: column;
@@ -392,10 +529,6 @@ form textarea {
 
 .span {
     font-weight: 800;
-}
-
-.view-habit-main {
-    padding: 1em;
 }
 
 .calendar {
@@ -475,6 +608,7 @@ form textarea {
     font-size: 0.9em;
     color: var(--text-primary);
 
+    cursor: pointer;
 }
 
 .completed {
@@ -484,18 +618,29 @@ form textarea {
 
 
 /* nav bar */
-.nav-bar {
-    position: absolute;
+/* .nav-bar {
     bottom: 0;
     left: 0;
-
+    
     width: 100%;
     height: 4em;     
-
+    
     border-top: 2px solid var(--border-subtle);
-
+    
     display: flex;
     align-items: center;
+    } */
+    
+.nav-bar {
+  /* position: absolute; */
+  height: 4em;
+  flex-shrink: 0;
+
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--surface-1);
+
+  display: flex;
+  align-items: center;
 }
 
 .nav-items {
@@ -506,12 +651,11 @@ form textarea {
 }
 
 .icon {
-    font-size: 1.8em;
-    font-size: 1.4rem;
-    cursor: pointer;
-    color: #777;
-    transition: color 0.2s, transform 0.2s;
     position: relative;
+    font-size: 1.4rem;
+    color: #777;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
 }
 
 .icon:hover {
@@ -519,7 +663,7 @@ form textarea {
 }
 
 .icon.active {
-    color: var(--text-color);             
+    color: var(--text-primary);             
     transform: translateY(-4px);
 }
 
@@ -529,7 +673,7 @@ form textarea {
     bottom: -6px;
     width: 6px;
     height: 6px;
-    background-color: var(--text-color);
+    background-color: var(--text-primary);
     border-radius: 50%;
 }
 
